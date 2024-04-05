@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Paiement</title>
+    <script src="./assets/Js/axios.js"></script>
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/bootstrap/css/dashboard.css">
+    <link rel="stylesheet" href="./assets/styles/style.css">
+    <meta name="theme-color" content="#7952b3">
+</head>
+<body>
+  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Gestion Paiement</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-nav d-none  d-md-inline-block">
+            <div class="nav-item text-nowrap">
+                <span class="text-white">Utilisateur :
+                </span>
+                <a class="nav-link px-3 bg-danger" href="index.html">Se deconnecter</a>
+            </div>
+        </div>
+    </header>
+
+    <div clasn="container-fluid">
+        <div class="row">
+  <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="Dashboard.html">
+                                <span data-feather=""></span>
+                                Tableau de bord
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="etudiant.html">
+                                <span data-feather="file"></span>
+                                Etudiant
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="options.html">
+                                <span data-feather="shopping-cart"></span>
+                                Option 
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="promotion.html">
+                                <span data-feather="shopping-cart"></span>
+                                Promotion 
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="inscription.html">
+                                <span data-feather="users"></span>
+                                Inscription
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="fix.html">
+                                <span data-feather="bar-chart-2"></span>
+                               Fixations
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="frais.html">
+                                <span data-feather="layers"></span>
+                               Frais
+                            </a>
+                        </li>
+                    </ul>
+
+
+                </div>
+            </nav>
+            <br> <br>
+           <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+              <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard Etudiant</h1>
+                    <a href="client.html" class="btn btn-sm btn-primary">Fermer</a>
+                </div>
+             
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                    <div>
+                                        <label for="nom" class="form-label">Nom</label>
+                                        <input id="noms" type="text" class="form-control" required>
+                                    </div>
+                                    <div>
+                                        <label for="genre" class="form-label">Genre</label>
+                                        <select name="" id="genre" class="form-select" required>
+                                            <option value="M">Masculin</option>
+                                            <option value="F">Feminin</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="Lieu" class="form-label">Lieu</label>
+                                        <input id="lieu" type="text" class="form-control" required>
+                                    </div>
+                                    <div>
+                                        <label for="Date Naissance" class="form-label">Date Naissance</label>
+                                        <input id="datenaissance" type="date" class="form-control" required>
+                                    </div>
+                                    <div>
+                                        <label for="Adresse" class="form-label">Adresse</label>
+                                        <input id="adresse" type="text" class="form-control" required>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <button id="submit" type="submit" class="btn btn-primary">Enregistrer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                     <div class="table-responsive">
+                                       <table id="data" class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th class="align-middle">Matricule</th>
+                                                    <th class="align-middle">Noms</th>
+                                                    <th class="align-middle">Genre</th>
+                                                    <th class="align-middle">Lieu</th>
+                                                    <th class="align-middle">Date</th>
+                                                    <th class="align-middle">Adresse</th>
+                                                    <th class="align-middle">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="table-body"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function afficher() {
+            document.querySelector('#table-body').innerHTML = "";
+            axios.get("/TP_LABO/api/etudiant/get_etudiant/?user=tplabo&mdp=12345").then((data) => {
+                data.data.response.forEach(element => {
+                    let row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${element.matricule}</td>
+                        <td>${element.noms}</td>
+                        <td>${element.genre}</td>
+                        <td>${element.lieu}</td>
+                        <td>${element.datenaissance}</td>
+                        <td>${element.adresse}</td>
+                        <td>
+                            <button class="btn btn-danger supp" data-matricule="${element.matricule}">Supp</button>
+                            <button class="btn btn-warning modif" data-matricule="${element.matricule}">Mod</button>
+                        </td>
+                    `;
+                    document.querySelector('#table-body').appendChild(row);
+                });
+            });
+        }
+
+        function supprimer(matricule) {
+            let form = new FormData();
+            form.append('matricule', matricule);
+            axios.post("/TP_LABO/api/etudiant/supprimer/?user=tplabo&mdp=12345", form).then(data => {
+                console.log(data);
+            });
+        }
+
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('supp')) {
+                let matricule = event.target.getAttribute('data-matricule');
+                supprimer(matricule);
+                afficher();
+            }
+        });
+
+        afficher();
+        setInterval(afficher, 3000);
+    </script>
+       <script src="./assets/Js/etudiant.js"></script>
+  <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
