@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Paiement</title>
+    <script src="./assets/Js/axios.js"></script>
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/bootstrap/css/dashboard.css">
+    <link rel="stylesheet" href="./assets/styles/style.css">
+    <meta name="theme-color" content="#7952b3">
+</head>
+<body>
+  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Gestion Paiement</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-nav d-none  d-md-inline-block">
+            <div class="nav-item text-nowrap">
+                <span class="text-white">Utilisateur :
+                </span>
+                <a class="nav-link px-3 bg-danger" href="index.html">Se deconnecter</a>
+            </div>
+        </div>
+    </header>
+
+    <div clasn="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="Dashboard.html">
+                                <span data-feather=""></span>
+                                Tableau de bord
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="etudiant.html">
+                                <span data-feather="file"></span>
+                                Etudiant
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="options.html">
+                                <span data-feather="shopping-cart"></span>
+                                Option 
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="promotion.html">
+                                <span data-feather="shopping-cart"></span>
+                                Promotion 
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="inscription.html">
+                                <span data-feather="users"></span>
+                                Inscription
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="fix.html">
+                                <span data-feather="bar-chart-2"></span>
+                               Fixations
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="frais.html">
+                                <span data-feather="layers"></span>
+                               Frais
+                            </a>
+                        </li>
+                    </ul>
+
+
+                </div>
+            </nav>
+            <br> <br>
+           <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+              <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+                </div>
+                <div class="container">
+                    <div class="card custom-card">
+                      <div>
+                          <h4 class="padding text-center">La liste des etudiants Inscrits</h4>
+                      </div>
+                                <div class="card-body">
+                                     <div class="table-responsive">
+                                       <table id="data" class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th class="align-middle">Nom Etudiant</th>
+                                                    <th class="align-middle">Option</th>
+                                                    <th class="align-middle">Promotion</th>
+                                                    <th class="align-middle">Annee</th>
+                                                    <th class="align-middle">Libellé</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="table-body"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function afficher() {
+            document.querySelector('#table-body').innerHTML = "";
+            axios.get("/TP_LABO/api/all/get_all/?user=tplabo&mdp=12345").then((data) => {
+                data.data.response.forEach(element => {
+                    let row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${element.Nom_Etudiant}</td>
+                        <td>${element.Option_Promotion}</td>
+                        <td>${element.Promotion}</td>
+                        <td>${element.Annee_Academique}</td>
+                        <td>${element.Designation_Inscription}</td>
+                    `;
+                    document.querySelector('#table-body').appendChild(row);
+                });
+            });
+        }
+        ;
+
+        afficher();
+        setInterval(afficher, 3000);
+    </script>
+  <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Paiement</title>
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/bootstrap/css/dashboard.css">
+    <link rel="stylesheet" href="./assets/styles/style.css">
+    <meta name="theme-color" content="#7952b3">
+</head>
+<body>
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Gestion Paiement</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-nav d-none d-md-inline-block">
+        <div class="nav-item text-nowrap">
+            <span class="text-white">Utilisateur :</span>
+            <a class="nav-link px-3 bg-danger" href="index.html">Se deconnecter</a>
+        </div>
+    </div>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+       <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="Dashboard.html">
+                                <span data-feather=""></span>
+                                Tableau de bord
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="etudiant.html">
+                                <span data-feather="file"></span>
+                                Etudiant
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="options.html">
+                                <span data-feather="shopping-cart"></span>
+                                Option 
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="promotion.html">
+                                <span data-feather="shopping-cart"></span>
+                                Promotion 
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="inscription.html">
+                                <span data-feather="users"></span>
+                                Inscription
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="fix.html">
+                                <span data-feather="bar-chart-2"></span>
+                               Fixations
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="frais.html">
+                                <span data-feather="layers"></span>
+                               Frais
+                            </a>
+                        </li>
+                    </ul>
+
+
+                </div>
+            </nav>
+        <br> <br>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Dashboard Inscription</h1>
+                <a href="client.html" class="btn btn-sm btn-primary">Fermer</a>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card custom-card">
+                            
+                            <form id="searchForm">
+                            <div class="card-body">
+                                <div>
+                                    <label for="idProm" class="form-label">Promotion</label>
+                                    <select name="idProm" id="idProm" class="form-select" required></select>
+                                </div>
+                                <div>
+                                    <label for="idOpt" class="form-label">Option</label>
+                                    <select name="idOpt" id="idOpt" class="form-select" required></select>
+                                </div>
+                                 <button type="submit" id="searchButton" class="btn btn-primary mt-3">Rechercher</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card custom-card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="studentTable" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="align-middle">Nom Etudiant</th>
+                                                <th class="align-middle">Option</th>
+                                                <th class="align-middle">Promotion</th>
+                                                <th class="align-middle">Annee</th>
+                                                <th class="align-middle">Désignation</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-body"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="./assets/Js/insc.js"></script>
+<script>
+    // Fonction pour récupérer les données via Axios
+    function getStudents(promotion, option) {
+        document.querySelector('#table-body').innerHTML = ""; // Effacer le contenu précédent du tableau
+        axios.get("/TP_LABO/api/all/get_all/?user=tplabo&mdp=12345")
+            .then((data) => {
+                let foundData = false; // Variable pour suivre si des données ont été trouvées
+                data.data.response.forEach(element => {
+                    // Vérifier si l'élément correspond aux critères de recherche
+                    if (element.Promotion.toLowerCase() === promotion.toLowerCase() && element.Option_Promotion.toLowerCase() === option.toLowerCase()) {
+                        let row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${element.Nom_Etudiant}</td>
+                            <td>${element.Option_Promotion}</td>
+                            <td>${element.Promotion}</td>
+                            <td>${element.Annee_Academique}</td>
+                            <td>${element.Designation_Inscription}</td>
+                        `;
+                        document.querySelector('#table-body').appendChild(row);
+                        foundData = true; // Indiquer que des données ont été trouvées
+                    }
+                });
+
+                // Si aucune donnée n'a été trouvée, afficher un message approprié
+                if (!foundData) {
+                    let row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td colspan="5">Aucune donnée trouvée pour cette recherche</td>
+                    `;
+                    document.querySelector('#table-body').appendChild(row);
+                }
+            })
+            .catch(function (error) {
+                // Erreur lors de la requête
+                console.error('Erreur lors de la récupération des données:', error);
+            });
+    }
+
+    // Charger les étudiants initiaux
+    getStudents('', ''); // Charge tous les étudiants au chargement de la page
+
+    // Écouter les changements dans les champs de sélection et appeler la fonction getStudents avec les valeurs sélectionnées
+    document.getElementById('idProm').addEventListener('change', function () {
+        const selectedPromotion = this.value;
+        const selectedOption = document.getElementById('idOpt').value;
+        getStudents(selectedPromotion, selectedOption);
+    });
+
+    document.getElementById('idOpt').addEventListener('change', function () {
+        const selectedOption = this.value;
+        const selectedPromotion = document.getElementById('idProm').value;
+        getStudents(selectedPromotion, selectedOption);
+    });
+
+    // Capturer l'événement "submit" du formulaire de recherche et appeler la fonction getStudents
+    document.getElementById('searchForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Empêcher le rechargement de la page par défaut du formulaire
+        const selectedPromotion = document.getElementById('idProm').value;
+        const selectedOption = document.getElementById('idOpt').value;
+        getStudents(selectedPromotion, selectedOption);
+    });
+
+</script>
+</body>
+</html>
